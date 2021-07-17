@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useState } from 'react';
 import { connect } from 'react-redux';
+import Todo from '../components/todo';
 import { actionCreators } from '../store';
 
 function Home({ todos, addTodo }) {
@@ -23,7 +24,11 @@ function Home({ todos, addTodo }) {
         <input type="text" value={text} onChange={onChange} />
         <button>Add</button>
       </form>
-      <ul>{JSON.stringify(todos)}</ul>
+      <ul>
+        {todos.map((todo) => (
+          <Todo {...todo} key={todo.id} />
+        ))}
+      </ul>
     </>
   );
 }
