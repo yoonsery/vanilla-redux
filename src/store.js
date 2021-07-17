@@ -1,9 +1,11 @@
 import { createStore } from 'redux';
-import { createAction } from '@reduxjs/toolkit';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 
 const addTodo = createAction('ADD');
 const deleteTodo = createAction('DELETE');
 
+// 1. use createAction
+/*
 const reducer = (state = [], action) => {
   switch (action.type) {
     case addTodo.type:
@@ -14,6 +16,20 @@ const reducer = (state = [], action) => {
       return state;
   }
 };
+*/
+
+// 2. use createReducer, can mutate state!
+//  - if you mutate something => don't return
+//  - return only new state
+const reducer = createReducer([], {
+  // didn't return just mutate, (because toolkit & Immer do it)
+  [addTodo]: (state, action) => {
+    state.push({ text: action.payload, id: Date.now() });
+  },
+  // return new state
+  [deleteTodo]: (state, action) =>
+    state.filter((todo) => todo.id !== action.payload),
+});
 
 const store = createStore(reducer);
 
